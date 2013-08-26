@@ -22,9 +22,9 @@
     ],
     "autoload": {
         "classmap":[
-            "test/TestCase.php",
-            "test/UnitTestCase.php",
-            "test/FunctionalTestCase.php"
+            "tests/cases/TestCase.php",
+            "tests/cases/UnitTestCase.php",
+            "tests/cases/FunctionalTestCase.php"
         ],
         "psr-0": {
             "Petflow\\Signifyd" : "src/"

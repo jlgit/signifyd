@@ -1,4 +1,6 @@
 /vendor/
 test_cases.json
+credentials.json
 composer.lock
+
 
