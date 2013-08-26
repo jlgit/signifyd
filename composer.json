@@ -1,0 +1,33 @@
+{
+    "name": "petflow/signifyd",
+    "description": "A light wrapper for interfacing with Signifyd",
+    "version": "dev-master",
+    "source": {
+        "url": "git://github.com/petflow/signifyd",
+        "type": "git",
+        "reference": "master"
+    },
+    "require": {
+        "guzzle/guzzle": "stable"
+    },
+    "require-dev": {
+        "mockery/mockery": "dev-master@dev",
+        "phpunit/phpunit": "3.7.*"
+    },
+    "authors": [
+        {
+            "name": "Nate Krantz",
+            "email": "nkrantz23@gmail.com"
+        }
+    ],
+    "autoload": {
+        "classmap":[
+            "test/TestCase.php",
+            "test/UnitTestCase.php",
+            "test/FunctionalTestCase.php",
+        ],
+        "psr-0": {
+            "Petflow\\Signifyd" : "src/"
+        }
+    }
+}
