@@ -1,1 +1,4 @@
 /vendor/
+test_cases.json
+composer.lock
+

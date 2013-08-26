@@ -8,7 +8,7 @@
         "reference": "master"
     },
     "require": {
-        "guzzle/guzzle": "stable"
+        "guzzle/guzzle": "dev-master@dev"
     },
     "require-dev": {
         "mockery/mockery": "dev-master@dev",
@@ -24,7 +24,7 @@
         "classmap":[
             "test/TestCase.php",
             "test/UnitTestCase.php",
-            "test/FunctionalTestCase.php",
+            "test/FunctionalTestCase.php"
         ],
         "psr-0": {
             "Petflow\\Signifyd" : "src/"
