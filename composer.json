@@ -1,6 +1,12 @@
 {
     "name": "petflow/signifyd",
     "description": "A light wrapper for interfacing with Signifyd",
+    "authors": [
+        {
+            "name": "Nate Krantz",
+            "email": "nkrantz23@gmail.com"
+        }
+    ],
     "version": "dev-master",
     "source": {
         "url": "git://github.com/petflow/signifyd",
@@ -14,12 +20,6 @@
         "mockery/mockery": "dev-master@dev",
         "phpunit/phpunit": "3.7.*"
     },
-    "authors": [
-        {
-            "name": "Nate Krantz",
-            "email": "nkrantz23@gmail.com"
-        }
-    ],
     "autoload": {
         "classmap":[
             "tests/cases/TestCase.php",
