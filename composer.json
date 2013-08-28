@@ -7,12 +7,7 @@
             "email": "nkrantz23@gmail.com"
         }
     ],
-    "version": "dev-master",
-    "source": {
-        "url": "git://github.com/petflow/signifyd",
-        "type": "git",
-        "reference": "master"
-    },
+    "minimum-stability": "dev",
     "require": {
         "guzzle/guzzle": "dev-master@dev"
     },
