@@ -1,6 +1,6 @@
 {
     "name": "petflow/signifyd",
-    "description": "A light wrapper for interfacing with Signifyd",
+    "description": "A lightweight library for interacting with the Signifyd REST API.",
     "authors": [
         {
             "name": "Nate Krantz",
