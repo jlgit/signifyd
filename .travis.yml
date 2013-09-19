@@ -1,0 +1,16 @@
+# we're in php baby
+language: php
+
+# php versions to test on
+php:
+  - 5.5
+  - 5.4
+
+# setup composer
+before_script:
+  - curl http://getcomposer.org/installer | php
+  - php composer.phar install --dev --prefer-source
+  - php composer.phar dump-autoload -o
+
+# tests  
+script: phpunit --coverage-text
