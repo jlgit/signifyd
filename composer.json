@@ -10,7 +10,7 @@
     "license": "MIT",
     "minimum-stability": "dev",
     "require": {
-        "guzzle/guzzle": "dev-master@dev"
+        "guzzle/guzzle": "3.8.*"
     },
     "require-dev": {
         "mockery/mockery": "dev-master@dev",

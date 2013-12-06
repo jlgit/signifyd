@@ -1,0 +1,15 @@
+# we're in php baby
+language: php
+
+# php versions to test on
+php:
+  - 5.5
+  - 5.4
+
+# setup composer
+before_script:
+  - composer install
+  - composer dump-autoload -o
+
+# tests  
+script: phpunit --coverage-text
