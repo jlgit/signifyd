@@ -15,7 +15,7 @@ class Signifyd {
 	 */
 	public function __construct($key) {
 		$this->client = new Client('https://api.signifyd.com/{version}', [
-			'version'         => 'v1',
+			'version'         => 'v2',
 			'request.options' => [
 				'headers' => [
 					'Accept' 	   => 'application/json',
