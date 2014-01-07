@@ -111,4 +111,33 @@ class Investigation {
 		}
 	}
 
+	public function getByOrderID($order_id) {
+		try {
+			// get the case
+			$response = self::$client->get("orders/$order_id/case")->send();
+
+			if (!$response->isSuccessful()) {
+				return [
+					'success' => false,
+					'reason'  => $response->getStatusCode(),
+					'response' => false
+				];
+			}
+
+			// return the case id
+			return [
+				'success' => true,
+				'response' => $response->json()
+			];
+
+		} catch (\Exception $e) {
+			return [
+				'success' => false,
+				'reason'  => $e->getMessage(),
+				'response' => false
+			];
+		}
+	}
+
 }
+
