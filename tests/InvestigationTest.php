@@ -30,10 +30,10 @@ class InvestigationTest extends TestCase {
     /**
      * Test creating a new fraud case returns the case id.
      * 
-     * @return array
+     * @return null
      */
     public function testCreateFraudCaseReturnsCaseId() {
-        $data     = array();
+        $data = array();
 
         // mock the post
         $this->http->shouldReceive('post')
@@ -63,7 +63,85 @@ class InvestigationTest extends TestCase {
 
         $this->assertTrue($result['success']);
         $this->assertEquals(123456, $result['case_id']);
+    }
 
+    /**
+     * Test retrieving a fraud case returns an array.
+     * 
+     * @return null
+     */
+    public function testRetrieveFraudCaseReturnsArray() {
+        $case_id = 7891011;
+        $data    = array(
+            'orderId'         => 123456,
+            'investigationId' => $case_id,
+            'scoreCategory'   => 'warning',
+            'adjustedScore'   => '430'
+        );
+
+        // mock the get
+        $this->http->shouldReceive('get')   
+            ->with('cases/'.$case_id)
+            ->once()
+            ->andReturn(
+                Mockery::mock('stdClass')
+                    ->shouldReceive('send')
+                    ->once()
+                    ->andReturn($this->response)
+                    ->getMock()
+            );
+
+        // mock the response
+        $this->response->shouldReceive('isSuccessful')
+            ->once()
+            ->andReturn(true);
+
+        // mock the response content
+        $this->response->shouldReceive('json')
+            ->once()
+            ->andReturn($data);
+
+        $result = $this->investigation->get($case_id);
+
+        $this->assertTrue($result['success']);
+        $this->assertEquals($data, $result['response']);
+    }
+
+    public function testRetrieveCaseByOrderIdReturnsArray() {
+        $order_id = 123456;
+        $data     = array(
+            'orderId'         => $order_id,
+            'investigationId' => 7891011,
+            'scoreCategory'   => 'warning',
+            'adjustedScore'   => '430'
+        );
+
+        // mock the get
+        $this->http->shouldReceive('get')   
+            ->with('orders/'.$order_id.'/case')
+            ->once()
+            ->andReturn(
+                Mockery::mock('stdClass')
+                    ->shouldReceive('send')
+                    ->once()
+                    ->andReturn($this->response)
+                    ->getMock()
+            );
+
+        // mock the response
+        $this->response->shouldReceive('isSuccessful')
+            ->once()
+            ->andReturn(true);
+
+        // mock the response content
+        $this->response->shouldReceive('json')
+            ->once()
+            ->andReturn($data);
+
+        $result = $this->investigation->getByOrderId($order_id);
+
+        $this->assertTrue($result['success']);
+        $this->assertEquals($data, $result['response']);
     }
 }
 
