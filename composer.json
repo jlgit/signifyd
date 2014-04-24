@@ -10,12 +10,10 @@
     "license": "MIT",
     "minimum-stability": "dev",
     "require": {
-        "petflow/testing": "dev-master",
         "guzzle/guzzle":   "3.8.*"
     },
     "require-dev": {
-        "phpunit/phpunit": "3.7.*",
-        "satooshi/php-coveralls": "dev-master"  
+        "petflow/testing": "dev-master"
     },
     "autoload": {
         "psr-0": {
