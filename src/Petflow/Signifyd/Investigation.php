@@ -58,23 +58,17 @@ class Investigation {
 			$response = self::$client->post('cases', null, json_encode($data))->send();
 
 			if (!$response->isSuccessful()) {
-				return array(
-					'success' => false,
-					'reason'  => $response->getStatusCode(),
-					'case_id' => false,
+				return $this->error(
+					$repsonse->getStatusCode(), 'case_id'
 				);
 			}
-
-			return array(
-				'success' => true,
-				'case_id' => $response->json()['investigationId']
+			return $this->success(
+				$response->json()['investigationId'], 'case_id'
 			);
 
 		} catch (Exception $e) {
-			return array(
-				'success' => false,
-				'case_id' => false,
-				'reason'  => $e->getMessage(),
+			return $this->error(
+				$e->getMessage(), 'case_id'
 			);
 		}
 	}
@@ -94,23 +88,18 @@ class Investigation {
 			$response = self::$client->get('cases/'.$case_id)->send();
 
 			if (!$response->isSuccessful()) {
-				return array(
-					'success' => false,
-					'reason'  => $response->getStatusCode(),
-					'response' => false
+				return $this->error(
+					$response->getStatusCode()
 				);
 			}
 
-			return array(
-				'success' => true,
-				'response' => $response->json()
+			return $this->success(
+				$response->json()
 			);
 
 		} catch (Exception $e) {
-			return array(
-				'success' => false,
-				'reason'  => $e->getMessage(),
-				'response' => false
+			return $this->error(
+				$e->getMessage()
 			);
 		}
 	}
@@ -130,23 +119,18 @@ class Investigation {
 			$response = self::$client->get("orders/$order_id/case")->send();
 
 			if (!$response->isSuccessful()) {
-				return array(
-					'success' => false,
-					'reason'  => $response->getStatusCode(),
-					'response' => false
+				return $this->error(
+					$response->getStatusCode()
 				);
 			}
 
-			return array(
-				'success' => true,
-				'response' => $response->json()
+			return $this->success(
+				$response->json()
 			);
 
 		} catch (Exception $e) {
-			return array(
-				'success' => false,
-				'reason'  => $e->getMessage(),
-				'response' => false
+			return $this->error(
+				$e->getMessage()
 			);
 		}
 	}
@@ -158,5 +142,36 @@ class Investigation {
 	 */
 	public function setClient(SignifydClient $signifyd) {
 		static::$client = $signifyd->get();
+	}
+
+	/**
+	 * Return a success array.
+	 * 
+	 * @param  mixed  $data
+	 * @param  string $field
+	 * 
+	 * @return array  
+	 */
+	private function success($data, $field = 'response') {
+		return array(
+			'success' => true,
+			$field    => $data
+		);
+	}
+
+	/**
+	 * Return an error array.
+	 * 
+	 * @param  Exception $e
+	 * @param  string $field
+	 * 
+	 * @return array
+	 */
+	private function error($message, $field = 'response') {
+		return array(
+			'success' => false,
+			$field    => false,
+			'reason'  => $message,
+		);
 	}
 }

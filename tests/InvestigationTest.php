@@ -107,6 +107,11 @@ class InvestigationTest extends TestCase {
         $this->assertEquals($data, $result['response']);
     }
 
+    /**
+     * Test that retrieving a case by order id returns an array.
+     * 
+     * @return null
+     */
     public function testRetrieveCaseByOrderIdReturnsArray() {
         $order_id = 123456;
         $data     = array(
@@ -143,4 +148,25 @@ class InvestigationTest extends TestCase {
         $this->assertTrue($result['success']);
         $this->assertEquals($data, $result['response']);
     }
+
+    /**
+     * Test that case retrieval failed returns failure array.
+     * 
+     * @return null
+     */
+    public function testRetrieveFraudCauseFailedReturnsFailureArray() {
+        $case_id = 7891011;
+
+        // mock the get
+        $this->http->shouldReceive('get')   
+            ->with('cases/'.$case_id)
+            ->once()
+            ->andThrow(
+                new Exception('we are all going to die someday')
+            );
+        $result = $this->investigation->get($case_id);
+
+        $this->assertFalse($result['success']);
+        $this->assertInternalType('string', $result['reason']);
+    }   
 }
