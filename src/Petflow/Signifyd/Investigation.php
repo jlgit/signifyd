@@ -1,143 +1,162 @@
 <?php namespace Petflow\Signifyd;
 
-use \Petflow\Signifyd\Client;
+use Petflow\Signifyd\Client\Signifyd as SignifydClient;
+
+use \InvalidArgumentException,
+	\Exception;
 
 /**
- * Investigation (case)
+ * An investigation class, wrapping the Signifyd REST API.
  *
- * This is an interface for an Investigation, also known as a case. This
- * class provides the ability to create new cases (POST) and retrieve
- * cases (GET).
+ * @todo next major version: create entities for cases 1:1 to signifyd api resources
+ * @todo next major version: depend on an http interface
  *
  * @author Nate Krantz <nate@petflow.com>
  */
 class Investigation {
 
 	/**
-	 * Client
-	 * @var [type]
+	 * The Signifyd client for HTTP interaction.
+	 * 
+	 * @var \Guzzle\Http\Client
 	 */
 	protected static $client = null;
 
 	/**
-	 * Construction
+	 * Construct a new investigation, passing in an array of credentials
+	 * to be used for constructing the http client.
 	 *
-	 * When creating a case resource, a key must be provided. The constructor 
-	 * will instantiate the client, which is a singleton.
+	 * @todo next version, depend on an http client interface rather than credentials.
 	 * 
-	 * @param [type] $credentials [description]
+	 * @param array $credentials
 	 */
-	public function __construct($credentials = null) {
+	public function __construct(array $credentials = null) {
+		// we need an api key
 		if (!isset($credentials['key'])) {
-			throw new \InvalidArgumentException('Must provide an API key to create a client.');
+			throw new InvalidArgumentException('Must pass an API key to Investigation for the client HTTP access.');
 		}
+
 		if (self::$client === null) {
-			$client = new Client\Signifyd($credentials['key']);
-			self::$client = $client->get();
+			$this->setClient(
+				new SignifydClient($credentials['key'])
+			);
 		}
 	}
 
 	/**
-	 * Create Case
+	 * Post a new case to the signifyd api via http.
 	 *
 	 * Using an array of data provided, post a request to the API to create a 
-	 * new case.
+	 * new signifyd fraud case.
 	 * 
-	 * @param  array  $data [description]
-	 * @return [type]       [description]
+	 * @param  array  $data
+	 * 
+	 * @return array     
 	 */
 	public function post(array $data) {
 		try {
-			// create the case
 			$response = self::$client->post('cases', null, json_encode($data))->send();
 
 			if (!$response->isSuccessful()) {
-				return [
+				return array(
 					'success' => false,
 					'reason'  => $response->getStatusCode(),
 					'case_id' => false,
-				];
+				);
 			}
 
-			// return the case id
-			return [
+			return array(
 				'success' => true,
 				'case_id' => $response->json()['investigationId']
-			];
+			);
 
-		} catch (\Exception $e) {
-			return [
+		} catch (Exception $e) {
+			return array(
 				'success' => false,
 				'case_id' => false,
 				'reason'  => $e->getMessage(),
-			];
+			);
 		}
 	}
 
 	/**
-	 * Get Case
+	 * Get a case from the signifyd api via http.
 	 *
-	 * Using the case id provided, attempt to locate and retrieve the case
-	 * and return it to the sender.
+	 * This function will get a case by its unique case id, using the
+	 * GET /cases/:case_id endpoint.
 	 * 
-	 * @param [type] [varname] [description]
-	 * @return [type] [description]
+	 * @param integer $case_id
+	 * 
+	 * @return array
 	 */
 	public function get($case_id) {
 		try {
-			// get the case
 			$response = self::$client->get('cases/'.$case_id)->send();
 
 			if (!$response->isSuccessful()) {
-				return [
+				return array(
 					'success' => false,
 					'reason'  => $response->getStatusCode(),
 					'response' => false
-				];
+				);
 			}
 
-			// return the case id
-			return [
+			return array(
 				'success' => true,
 				'response' => $response->json()
-			];
+			);
 
-		} catch (\Exception $e) {
-			return [
+		} catch (Exception $e) {
+			return array(
 				'success' => false,
 				'reason'  => $e->getMessage(),
 				'response' => false
-			];
+			);
 		}
 	}
 
+	/**
+	 * Get a case by an order id from the signifyd api via http.
+	 *
+	 * This function will retrieve a case by its corresponding order
+	 * id, using the GET /orders/:order_id/case endpoint.
+	 * 
+	 * @param  integer $order_id
+	 * 
+	 * @return array
+	 */
 	public function getByOrderID($order_id) {
 		try {
-			// get the case
 			$response = self::$client->get("orders/$order_id/case")->send();
 
 			if (!$response->isSuccessful()) {
-				return [
+				return array(
 					'success' => false,
 					'reason'  => $response->getStatusCode(),
 					'response' => false
-				];
+				);
 			}
 
-			// return the case id
-			return [
+			return array(
 				'success' => true,
 				'response' => $response->json()
-			];
+			);
 
-		} catch (\Exception $e) {
-			return [
+		} catch (Exception $e) {
+			return array(
 				'success' => false,
 				'reason'  => $e->getMessage(),
 				'response' => false
-			];
+			);
 		}
 	}
 
+	/**
+	 * Set a new signifyd client.
+	 * 
+	 * @param \Petflow\Signifyd\Client\Signifyd $signifyd
+	 */
+	public function setClient(SignifydClient $signifyd) {
+		static::$client = $signifyd->get();
+	}
 }
-

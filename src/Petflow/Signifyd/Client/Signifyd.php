@@ -2,36 +2,53 @@
 
 use Guzzle\Http\Client;
 
+/**
+ * A signifyd wrapper for their restful http api.
+ *
+ * @todo next major version: fix the dependencies here
+ */
 class Signifyd {
 
 	/**
 	 * Guzzle Client
-	 * @var [type]
+	 * 
+	 * @var \Guzzle\Http\Client
 	 */
 	protected $client;
 
 	/**
-	 * Create Client
+	 * Construct a new Signifyd instance, using the passed
 	 */
 	public function __construct($key) {
-		$this->client = new Client('https://api.signifyd.com/{version}', [
-			'version'         => 'v2',
-			'request.options' => [
-				'headers' => [
-					'Accept' 	   => 'application/json',
-					'Content-Type' => 'application/json'
-				],
-				'auth'    => [$key, '', 'Basic']
-			]
-		]);
+		$this->set(
+			new Client('https://api.signifyd.com/{version}', array(
+				'version'         => 'v2',
+				'request.options' => [
+					'headers' => [
+						'Accept' 	   => 'application/json',
+						'Content-Type' => 'application/json'
+					],
+					'auth'    => [$key, '', 'Basic']
+				]
+			))
+		);
 	}
 
 	/**
-	 * Get the Client
+	 * Get the current http client.
 	 * 
-	 * @return [type] [description]
+	 * @return \Guzzle\Http\Client
 	 */
 	public function get() {
 		return $this->client;
+	}
+
+	/**
+	 * Set the current Http client.
+	 * 
+	 * @param \Guzzle\Http\Client $client
+	 */
+	public function set(Client $client) {
+		$this->client = $client;
 	}
 }

@@ -10,18 +10,14 @@
     "license": "MIT",
     "minimum-stability": "dev",
     "require": {
-        "guzzle/guzzle": "3.8.*"
+        "petflow/testing": "dev-master",
+        "guzzle/guzzle":   "3.8.*"
     },
     "require-dev": {
         "mockery/mockery": "dev-master@dev",
         "phpunit/phpunit": "3.7.*"
     },
     "autoload": {
-        "classmap":[
-            "tests/cases/TestCase.php",
-            "tests/cases/UnitTestCase.php",
-            "tests/cases/FunctionalTestCase.php"
-        ],
         "psr-0": {
             "Petflow\\Signifyd" : "src/"
         }
