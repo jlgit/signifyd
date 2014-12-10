@@ -9,11 +9,24 @@ For more information about Signifyd and their API, see links below:
 * https://www.signifyd.com
 * https://www.signifyd.com/docs/api
 
+## Installation
+Download this entire repository into your local project folder, and then run the following:
+```
+curl -sS https://getcomposer.org/installer | php
+php composer.phar install
+composer install
+```
+
 ## Usage
 
 #### Basic Case Operations
 ~~~php
-$investigation = new Investigation('your-signifyd-api-key-here');
+namespace Petflow\Signifyd;
+require './vendor/autoload.php';
+
+$api_key = array('key' => 'your-signifyd-api-key-here');
+
+$investigation = new Investigation($api_key);
 
 // fields match exactly to reference: https://www.signifyd.com/docs/api
 $data = array(
